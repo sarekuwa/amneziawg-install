@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # AmneziaWG server installer
-# https://github.com/varckin/amneziawg-install
+# https://github.com/sarekuwa/amneziawg-install fork from Varckin
 
 RED='\033[0;31m'
 ORANGE='\033[0;33m'
@@ -152,7 +152,7 @@ function readH1AndH2AndH3AndH4() {
 }
 
 function installQuestions() {
-	echo "AmneziaWG server installer (https://github.com/varckin/amneziawg-install)"
+	echo "AmneziaWG server installer (https://github.com/sarekuwa/amneziawg-install)"
 	echo ""
 	echo "I need to ask you a few questions before starting the setup."
 	echo "You can keep the default options and just press enter if you are ok with them."
@@ -348,7 +348,7 @@ PostUp = iptables -t nat -A POSTROUTING -o ${SERVER_PUB_NIC} -j MASQUERADE
 PostDown = iptables -D INPUT -p udp --dport ${SERVER_PORT} -j ACCEPT
 PostDown = iptables -D FORWARD -i ${SERVER_PUB_NIC} -o ${SERVER_AWG_NIC} -j ACCEPT
 PostDown = iptables -D FORWARD -i ${SERVER_AWG_NIC} -j ACCEPT
-PostDown = iptables -t nat -D POSTROUTING -o ${SERVER_PUB_NIC} -j MASQUERADE
+PostDown = iptables -t nat -D POSTROUTING -o ${SERVER_PUB_NIC} -j MASQUERADE"
 	fi
 
 	# Enable routing on the server
@@ -597,8 +597,6 @@ function loadParams() {
 }
 
 function manageMenu() {
-	echo "AmneziaWG server installer (https://github.com/sarekuwa/amneziawg-install)"
-	echo ""
 	echo "It looks like AmneziaWG is already installed."
 	echo ""
 	echo "What do you want to do?"
