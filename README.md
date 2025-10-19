@@ -7,7 +7,7 @@
 Supported distributions:
 
 - AlmaLinux >= 9
-- Debian >= 11
+- Debian >= 12  # Fixed awg driver install in this fork.
 - Rocky Linux >= 9
 - Ubuntu >= 22.04
 
@@ -19,12 +19,18 @@ others can work but not tested
 
 Before installation it is strictly recommended to upgrade your system to the latest available version and perform the reboot afterwards.
 
+## Debian/Ubuntu 
+
+```bash
+sudo apt update && apt upgrade -y
+```
+
 Use curl or wget to download the script:
 ```bash
-curl -O https://raw.githubusercontent.com/Varckin/amneziawg-install/main/amneziawg-install.sh
+curl -O https://raw.githubusercontent.com/sarekuwa/amneziawg-install/main/amneziawg-install.sh
 ```
 ```bash
-wget https://raw.githubusercontent.com/Varckin/amneziawg-install/main/amneziawg-install.sh
+wget https://raw.githubusercontent.com/sarekuwa/amneziawg-install/main/amneziawg-install.sh
 ```
 
 Set permissions:

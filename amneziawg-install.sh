@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# AmneziaWG server installer
-# https://github.com/varckin/amneziawg-install
+# AmneziaWG server installer fork from Varckin
+# https://github.com/sarekuwa/amneziawg-install
 
 RED='\033[0;31m'
 ORANGE='\033[0;33m'
@@ -267,7 +267,7 @@ function installAmneziaWG() {
 				sed -i 's/^deb/deb-src/' /etc/apt/sources.list.d/amneziawg.sources.list
 			fi
 		fi
-		apt install -y software-properties-common
+		apt install -y software-properties-common python3-launchpadlib gnupg2 linux-headers-$(uname -r)
 		add-apt-repository -y ppa:amnezia/ppa
 		apt install -y amneziawg amneziawg-tools qrencode
 	elif [[ ${OS} == 'debian' ]]; then
@@ -275,6 +275,7 @@ function installAmneziaWG() {
 			cp /etc/apt/sources.list /etc/apt/sources.list.d/amneziawg.sources.list
 			sed -i 's/^deb/deb-src/' /etc/apt/sources.list.d/amneziawg.sources.list
 		fi
+		apt install -y software-properties-common python3-launchpadlib gnupg2 linux-headers-$(uname -r)
 		apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 57290828
 		echo "deb https://ppa.launchpadcontent.net/amnezia/ppa/ubuntu focal main" >>/etc/apt/sources.list.d/amneziawg.sources.list
 		echo "deb-src https://ppa.launchpadcontent.net/amnezia/ppa/ubuntu focal main" >>/etc/apt/sources.list.d/amneziawg.sources.list
@@ -340,22 +341,14 @@ H4 = ${SERVER_AWG_H4}" >"${SERVER_AWG_CONF}"
 		echo "PostUp = firewall-cmd --add-port ${SERVER_PORT}/udp && firewall-cmd --add-rich-rule='rule family=ipv4 source address=${FIREWALLD_IPV4_ADDRESS}/24 masquerade' && firewall-cmd --add-rich-rule='rule family=ipv6 source address=${FIREWALLD_IPV6_ADDRESS}/24 masquerade'
 PostDown = firewall-cmd --remove-port ${SERVER_PORT}/udp && firewall-cmd --remove-rich-rule='rule family=ipv4 source address=${FIREWALLD_IPV4_ADDRESS}/24 masquerade' && firewall-cmd --remove-rich-rule='rule family=ipv6 source address=${FIREWALLD_IPV6_ADDRESS}/24 masquerade'" >>"${SERVER_AWG_CONF}"
 	else
-		echo "PostUp = iptables -I INPUT -p udp --dport ${SERVER_PORT} -j ACCEPT
+echo "PostUp = iptables -I INPUT -p udp --dport ${SERVER_PORT} -j ACCEPT
 PostUp = iptables -I FORWARD -i ${SERVER_PUB_NIC} -o ${SERVER_AWG_NIC} -j ACCEPT
 PostUp = iptables -I FORWARD -i ${SERVER_AWG_NIC} -j ACCEPT
 PostUp = iptables -t nat -A POSTROUTING -o ${SERVER_PUB_NIC} -j MASQUERADE
-PostUp = ip6tables -I INPUT -p udp --dport ${SERVER_PORT} -j ACCEPT
-PostUp = ip6tables -I FORWARD -i ${SERVER_PUB_NIC} -o ${SERVER_AWG_NIC} -j ACCEPT
-PostUp = ip6tables -I FORWARD -i ${SERVER_AWG_NIC} -j ACCEPT
-PostUp = ip6tables -t nat -A POSTROUTING -o ${SERVER_PUB_NIC} -j MASQUERADE
 PostDown = iptables -D INPUT -p udp --dport ${SERVER_PORT} -j ACCEPT
 PostDown = iptables -D FORWARD -i ${SERVER_PUB_NIC} -o ${SERVER_AWG_NIC} -j ACCEPT
 PostDown = iptables -D FORWARD -i ${SERVER_AWG_NIC} -j ACCEPT
 PostDown = iptables -t nat -D POSTROUTING -o ${SERVER_PUB_NIC} -j MASQUERADE
-PostDown = ip6tables -D INPUT -p udp --dport ${SERVER_PORT} -j ACCEPT
-PostDown = ip6tables -D FORWARD -i ${SERVER_PUB_NIC} -o ${SERVER_AWG_NIC} -j ACCEPT
-PostDown = ip6tables -D FORWARD -i ${SERVER_AWG_NIC} -j ACCEPT
-PostDown = ip6tables -t nat -D POSTROUTING -o ${SERVER_PUB_NIC} -j MASQUERADE" >>"${SERVER_AWG_CONF}"
 	fi
 
 	# Enable routing on the server
@@ -604,7 +597,7 @@ function loadParams() {
 }
 
 function manageMenu() {
-	echo "AmneziaWG server installer (https://github.com/varckin/amneziawg-install)"
+	echo "AmneziaWG server installer fork (https://github.com/sarekuwa/amneziawg-install)"
 	echo ""
 	echo "It looks like AmneziaWG is already installed."
 	echo ""
