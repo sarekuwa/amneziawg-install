@@ -177,7 +177,7 @@ function installQuestions() {
 	done
 
 	until [[ ${SERVER_AWG_IPV4} =~ ^([0-9]{1,3}\.){3} ]]; do
-		read -rp "Server AmneziaWG IPv4: " -e -i 10.66.66.1 SERVER_AWG_IPV4
+		read -rp "Server AmneziaWG IPv4: " -e -i 10.110.150.1 SERVER_AWG_IPV4
 	done
 
 	until [[ ${SERVER_AWG_IPV6} =~ ^([a-f0-9]{1,4}:){3,4}: ]]; do
@@ -195,7 +195,7 @@ function installQuestions() {
 		read -rp "First DNS resolver to use for the clients: " -e -i 1.1.1.1 CLIENT_DNS_1
 	done
 	until [[ ${CLIENT_DNS_2} =~ ^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$ ]]; do
-		read -rp "Second DNS resolver to use for the clients (optional): " -e -i 1.0.0.1 CLIENT_DNS_2
+		read -rp "Second DNS resolver to use for the clients (optional): " -e -i 8.8.8.8 CLIENT_DNS_2
 		if [[ ${CLIENT_DNS_2} == "" ]]; then
 			CLIENT_DNS_2="${CLIENT_DNS_1}"
 		fi
@@ -269,7 +269,8 @@ function installAmneziaWG() {
 		fi
 		apt install -y software-properties-common python3-launchpadlib gnupg2 linux-headers-$(uname -r)
 		add-apt-repository -y ppa:amnezia/ppa
-		apt install -y amneziawg amneziawg-tools qrencode
+		apt update
+		apt install -y amneziawg amneziawg-tools amneziawg-dkms qrencode
 	elif [[ ${OS} == 'debian' ]]; then
 		if ! grep -q "^deb-src" /etc/apt/sources.list; then
 			cp /etc/apt/sources.list /etc/apt/sources.list.d/amneziawg.sources.list
@@ -279,8 +280,8 @@ function installAmneziaWG() {
 		echo "deb https://ppa.launchpadcontent.net/amnezia/ppa/ubuntu focal main" >>/etc/apt/sources.list.d/amneziawg.sources.list
 		echo "deb-src https://ppa.launchpadcontent.net/amnezia/ppa/ubuntu focal main" >>/etc/apt/sources.list.d/amneziawg.sources.list
 		apt update
-		apt install -y software-properties-common python3-launchpadlib gnupg2 linux-headers-$(uname -r)
-		apt install -y amneziawg amneziawg-tools qrencode iptables
+		apt install -y python3-launchpadlib gnupg2 linux-headers-$(uname -r)
+		apt install -y amneziawg amneziawg-tools amneziawg-dkms qrencode iptables
 	elif [[ ${OS} == 'fedora' ]]; then
 		dnf config-manager --set-enabled crb
 		dnf install -y epel-release
